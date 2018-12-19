@@ -22,7 +22,7 @@ import com.alibaba.fastjson.JSON;
 import com.dingtalk.chatbot.DingtalkChatbotClient;
 import com.dingtalk.chatbot.SendResult;
 import com.dingtalk.chatbot.message.TextMessage;
-import com.myproject.demo.Dto.TodayThingsResponse;
+import com.myproject.demo.Dto.BaseResponse;
 import com.myproject.demo.dao.TodayThingsDao;
 import com.myproject.demo.entity.Schedule;
 import org.springframework.stereotype.Service;
@@ -46,10 +46,9 @@ public class TodayThingsService {
         String code="";
         DingtalkChatbotClient dingtalkChatbotClient = new DingtalkChatbotClient();
         TextMessage msg = new TextMessage("") ;
-        msg.setText("我就是我，是不一样的烟火");
+        msg.setText("到点了，别忘了打卡");
         msg.setIsAtAll(false);
         List list = new ArrayList();
-        list.add("15973754415");
         msg.setAtMobiles(list);
 
         try {
@@ -66,11 +65,32 @@ public class TodayThingsService {
     }
 
 
-    public TodayThingsResponse getAllSchedule(){
-        TodayThingsResponse response = new TodayThingsResponse();
+    public BaseResponse getAllSchedule(){
+        BaseResponse response = new BaseResponse();
         List<Schedule> scheduleList = todayThingsDao.getAllSchedule();
-        response.setData(JSON.parseArray(JSON.toJSONString(scheduleList)));
-        response.setCode("200");
+        if(scheduleList!=null&&!(scheduleList.isEmpty())) {
+            response.setData(JSON.parseArray(JSON.toJSONString(scheduleList)));
+            response.setCode("200");
+            response.setCount(scheduleList.size());
+        }else{
+            response.setCode("200");
+            response.setMsg("暂无数据");
+        }
+        return response;
+    }
+
+    public BaseResponse querySchedule(){
+        BaseResponse response = new BaseResponse();
+        String status = "0";
+        List<Schedule> sList = todayThingsDao.queryScheduleByStatus(status);
+        if( sList!=null && !(sList.isEmpty())) {
+            response.setData(JSON.parseArray(JSON.toJSONString(sList)));
+            response.setCode("200");
+            response.setCount(sList.size());
+        }else{
+            response.setCode("200");
+            response.setMsg("暂无数据");
+        }
         return response;
     }
 }

@@ -7,4 +7,7 @@
         select * from  Schedule
     </select>
 
+    <select id="queryScheduleByStatus" resultType="com.myproject.demo.entity.Schedule">
+        select * from  Schedule where status = #{status}
+    </select>
 </mapper>

@@ -19,7 +19,7 @@ package com.myproject.demo.controller;
 
 
 
-import com.myproject.demo.Dto.TodayThingsResponse;
+import com.myproject.demo.Dto.BaseResponse;
 import com.myproject.demo.services.TodayThingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,16 +35,16 @@ public class TodayThingsController {
     private TodayThingsService todayThingsService;
 
     @ResponseBody
-    @RequestMapping(value = "/sendMessage")
-    public String  sendMessage(){
+    @RequestMapping(value = "/querySchedule")
+    public BaseResponse  sendMessage(){
 
-        String msg=todayThingsService.sendMessage();
-            return msg;
+            return todayThingsService.querySchedule();
     }
 
     @ResponseBody
     @RequestMapping(value = "/getAllSchedule")
-    public TodayThingsResponse getAllSchedule(){
+    public BaseResponse getAllSchedule(){
         return todayThingsService.getAllSchedule();
     }
+
 }

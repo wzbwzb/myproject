@@ -15,18 +15,33 @@
  * @since 0.0.1
  */
 
-package com.myproject.demo.dao;
+package com.myproject.demo.Dto;
 
-import com.myproject.demo.entity.Schedule;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import com.alibaba.fastjson.JSONArray;
+import lombok.Data;
 
-import java.util.List;
+@Data
+public class BaseResponse {
 
-@Mapper
-public interface TodayThingsDao {
+    /**
+     * 返回消息状态码 200为成功,0为异常
+     */
+    private  String code;
 
-    public List<Schedule> getAllSchedule();
+    /**
+     * 状态码对应消息
+     */
+    private  String msg;
 
-    public List<Schedule> queryScheduleByStatus(@Param("status") String status);
+    /**
+     * 返回数据
+     */
+    private JSONArray data;
+
+    /**
+     * 返回数据总数
+     */
+    private  Integer count;
+
+
 }

@@ -15,32 +15,30 @@
  * @since 0.0.1
  */
 
-package com.myproject.demo.Dto;
+package com.myproject.demo.work;
 
-import com.alibaba.fastjson.JSONArray;
-import lombok.Data;
+import com.myproject.demo.services.TodayThingsService;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
-@Data
-public class TodayThingsResponse {
+import javax.annotation.Resource;
 
-    private  String code;
+@Service
+@Slf4j
+public class DingtalkJob {
 
-    private  String msg;
 
-    private JSONArray data;
+    @Resource
+    private TodayThingsService todayThingsService;
 
-    /**
-     * 分页总数据
-     */
-    private long total;
+    private  static  final Logger LOGGER = log;
 
-    /**
-     * 分页页码
-     */
-    private int pageNum;
-
-    /**
-     * 分页条数
-     */
-    private int pageSize;
+    @Scheduled(cron = " 0 30 19 * * *")
+    public void workStar(){
+        log.info("推送开始");
+        String msg=todayThingsService.sendMessage();
+        log.info(">>>>>>>>{}",msg);
+    }
 }
