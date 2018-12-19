@@ -3,9 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
 </head>
-<body>
-
+<style>
+    .mybody{
+        width: 98.5%;
+        margin: 10px 10px auto;
+    }
+</style>
+<blockquote class="layui-elem-quote" style="margin-top: 20px">
+    <h2>计划制定</h2>
+</blockquote>
+<body class="mybody">
+<div class="layui-collapse" lay-filter="plan">
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">工作任务</h2>
+        <div class="layui-colla-content">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">预定时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" lay-verify="required" name="time" id="time"
+                                   placeholder="yyyy-MM-dd">
+                            <input type="hidden" name="type" value="1">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">任务标题</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="title" id="title" placeholder="标题">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">任务描述</label>
+                    <div class="layui-input-block">
+                            <textarea placeholder="请输入任务描述内容" class="layui-textarea" name="content"
+                                      id="discription"></textarea>
+                    </div>
+                </div>
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-danger" id="btn" lay-submit lay-filter="formDemo">确认</button>
+                    <input type="reset" class="layui-btn" id="reset">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">日常生活</h2>
+        <div class="layui-colla-content">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">预定时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" lay-verify="required" name="time" id="time1"
+                                   placeholder="yyyy-MM-dd">
+                            <input type="hidden" name="type" value="2">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">任务标题</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="title" id="title1" placeholder="标题">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">任务描述</label>
+                    <div class="layui-input-block">
+                            <textarea placeholder="请输入任务描述内容" class="layui-textarea" name="content"
+                                      id="discription1"></textarea>
+                    </div>
+                </div>
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-danger" id="btn1" lay-submit lay-filter="formDemo1">确认</button>
+                    <input type="reset" class="layui-btn" id="reset1">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">其他任务</h2>
+        <div class="layui-colla-content">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">预定时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" lay-verify="required" name="time" id="time2"
+                                   placeholder="yyyy-MM-dd">
+                            <input type="hidden" name="type" value="3">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">任务标题</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="title" id="title2" placeholder="标题">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">任务描述</label>
+                    <div class="layui-input-block">
+                            <textarea placeholder="请输入任务描述内容" class="layui-textarea" name="content"
+                                      id="discription2"></textarea>
+                    </div>
+                </div>
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-danger" id="btn2" lay-submit lay-filter="formDemo2">确认</button>
+                    <input type="reset" class="layui-btn" id="reset2">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
+<script src="../layui/jquery-3.3.1.min.js"></script>
+<script src="../layui/layui.js"></script>
+<script>
+    layui.use(['element', 'layer','form','laydate'], function() {
+        var element = layui.element;
+        var layer = layui.layer;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var $ = layui.jquery;
+        element.on('collapse(plan)', function(data){
+            // layer.msg('展开状态：'+ data.show);
+        });
+        /*
+         * 表单监控
+         */
+        form.on('submit(formDemo)', function(data){
+            $.ajax({
+                data: data.field,
+                dataType: 'text',
+                type:'post',
+                url:'/scheduleMake',
+                success:function (data) {
+                    layer.msg(data);
+                },
+                error:function () {
+                }
+            });
+            return false;
+        });
+        form.on('submit(formDemo1)', function(data){
+            $.ajax({
+                data: data.field,
+                dataType: 'text',
+                type:'post',
+                url:'/scheduleMake',
+                success:function (data) {
+                    layer.msg(data);
+                },
+                error:function () {
+                }
+            });
+            return false;
+        });
+        form.on('submit(formDemo2)', function(data){
+            $.ajax({
+                data: data.field,
+                dataType: 'text',
+                type:'post',
+                url:'/scheduleMake',
+                success:function (data) {
+                    layer.msg(data);
+                },
+                error:function () {
+                }
+            });
+            return false;
+        });
 
+        /*
+         * 日期渲染
+         */
+        laydate.render({
+            elem: '#time'
+            ,min: 0
+            ,max: 20
+        });
+        laydate.render({
+            elem: '#time1'
+            ,min: 0
+            ,max: 20
+        });
+        laydate.render({
+            elem: '#time2'
+            ,min: 0
+            ,max: 20
+        });
+
+        //弹框提示
+        $('#time,#time1,#time2').click(function () {
+            var that = this;
+            /*
+             * tips(content,follow,options)
+             */
+            layer.tips('时间选择从今天开始，最多20天', that, {
+                tips:1,
+                tipsMore:false
+            }); //在元素的事件回调体中，follow直接赋予this即可
+        });
+    });
+</script>
 </html>

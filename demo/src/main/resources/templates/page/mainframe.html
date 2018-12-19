@@ -22,11 +22,11 @@
         white-space: nowrap;
     }
 
-        /*.layui-layout-left .layui-nav-item a{*/
-        /*width: 40px;*/
+    /*.layui-layout-left .layui-nav-item a{*/
+    /*width: 40px;*/
     /*}*/
     .layui-layout-left .layui-nav-item a i{
-       padding-left: 10px;
+        padding-left: 10px;
     }
 </style>
 <body class="layui-layout-body">
@@ -47,7 +47,8 @@
                     <dd><a href="javascript:;" id="two">动态select选择框</a></dd>
                     <dd><a href="javascript:;" id="three">带转义字符的JSON</a></dd>
                     <dd><a href="javascript:;" id="four">Redis数据查询</a></dd>
-                    <dd><a href="javascript:;" id="other">测试专用</a></dd>
+                    <dd><a href="javascript:;" id="test-btn">测试专用</a></dd>
+                    <dd><a href="javascript:;" id="cainiao">菜鸟电子面单</a></dd>
                 </dl>
             </li>
             <!--<li class="layui-nav-item"><a href="javascript:;"><input type ="text" class="layui-input" style="height: 58px"></a></li>-->
@@ -107,10 +108,10 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;"><i class="layui-icon layui-icon-loading myicon"></i>Others</a>
+                    <a href="javascript:;"><i class="layui-icon layui-icon-loading myicon"></i>Plan</a>
                     <dl class="layui-nav-child">
-                        <dd><a>other_1</a></dd>
-                        <dd><a>other_2</a></dd>
+                        <dd><a href="javascript:;" id="new_plan">New</a></dd>
+                        <dd><a href="javascript:;" id="update_plan">Update</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -160,19 +161,24 @@
                 type: 2,
                 content: '/todayThings',
                 shade: 0,
-                area: ['650px', '650px'],
-                offset:'rb',
-                maxmin: false,
+                area: ['1200px', '650px'],
+                offset:[70,210],
+                maxmin: true,
                 move:false,
                 cancel: function(index, layero){
-                   //if(){ //只有当点击confirm框的确定时，该层才会关闭
-                        if(confirm('确定看到了？？？？') )
-                        {layer.close(index)
+                    if(confirm('确定看到了？？？？')){ //只有当点击confirm框的确定时，该层才会关闭
+                        if(confirm('真的？？？？')){
+                            layer.close(index)
                         }
-                    //}
+                    }
                     return false;
                 }
             });
+        });
+
+        $('#cainiao').click(function () {
+            $('#myiframe').attr("src", "http://jingangtest.yto56.com.cn/matcn/Encoder.jsp");
+            document.getElementById("mybody").innerHTML = $("#mybody").html();
         });
 
         $('#four').click(function () {
@@ -180,13 +186,18 @@
             document.getElementById("mybody").innerHTML = $("#mybody").html();
         });
 
-        $('#other').click(function () {
-            $('#myiframe').attr("src", "test_page/test_upload.html");
-            document.getElementById("mybody").innerHTML = $("#mybody").html();
-        });
+        // $('#other').click(function () {
+        //     $('#myiframe').attr("src", "test_page/test_upload.html");
+        //     document.getElementById("mybody").innerHTML = $("#mybody").html();
+        // });
 
         $('#three').click(function () {
             $('#myiframe').attr("src", "static_html/fun_three.html");
+            document.getElementById("mybody").innerHTML = $("#mybody").html();
+        });
+
+        $('#new_plan').click(function () {
+            $('#myiframe').attr("src", "/schedule");
             document.getElementById("mybody").innerHTML = $("#mybody").html();
         });
 
