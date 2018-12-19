@@ -13,7 +13,18 @@
         <result column="email" property="email" jdbcType="VARCHAR" />
         <result column="temp" property="temp" jdbcType="VARCHAR" />
     </resultMap>
-
+    <resultMap id="ScheduleMap" type="com.myproject.demo.entity.Schedule">
+        <!-- 结果集的主键 -->
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <!-- 普通的列  -column 是数据库中字段， property是实体类中字段-->
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="update_time" property="update_time" jdbcType="DATE" />
+        <result column="create_time" property="create_time" jdbcType="DATE" />
+        <result column="finish_time" property="finish_time" jdbcType="DATE" />
+        <result column="status" property="status" jdbcType="CHAR" />
+    </resultMap>
     <resultMap id="siteResultMap" type="com.myproject.demo.entity.Site" >
         <!-- 结果集的主键 -->
         <!-- 普通的列  -column 是数据库中字段， property是实体类中字段-->
@@ -21,7 +32,6 @@
         <result column="siteAddress" property="siteAddress" jdbcType="VARCHAR" />
         <result column="accessTime" property="accessTime" jdbcType="DATE" />
     </resultMap>
-
     <resultMap id="billIndexResultMap" type="com.myproject.demo.entity.Warning_Index" >
         <!-- 结果集的主键 -->
         <!-- 普通的列  -column 是数据库中字段， property是实体类中字段-->
@@ -36,11 +46,6 @@
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="create_time" property="create_time" jdbcType="DATE" />
     </resultMap>
-
-    <select id="selectlogin" resultMap="BaseResultMap" parameterType="com.myproject.demo.entity.UserLogin">
-        select * from suser where phone=#{userlogin.phone};
-    </select>
-
     <resultMap id="placeResultMap" type="com.myproject.demo.entity.Place" >
         <!-- 结果集的主键 -->
         <!-- 普通的列  -column 是数据库中字段， property是实体类中字段-->
@@ -62,18 +67,21 @@
     <select id="selectByNameOrTemp" resultMap="BaseResultMap">
         select * from suser
         where 1 = 1
-            <if test="userlogin.uname != ''">
-                and uname like '%${userlogin.uname}%'
-            </if>
-            <if test="userlogin.temp != ''">
-                and temp = #{userlogin.temp}
-            </if>
+        <if test="userlogin.uname != ''">
+            and uname like '%${userlogin.uname}%'
+        </if>
+        <if test="userlogin.temp != ''">
+            and temp = #{userlogin.temp}
+        </if>
     </select>
     <select id="selectLastTest" resultMap="BaseResultMap">
         select PASSWORD from suser where phone=#{userlogin.phone};
     </select>
     <select id="selectSiteHistory" resultMap="siteResultMap">
         select * from site where temp = '0'
+    </select>
+    <select id="selectlogin" resultMap="BaseResultMap" parameterType="com.myproject.demo.entity.UserLogin">
+        select * from suser where phone=#{userlogin.phone};
     </select>
 
     <select id="selectSiteBookMark" resultMap="siteResultMap">
@@ -136,7 +144,10 @@
                 #{insertIndex.max_weight},
                 #{insertIndex.days},
                 #{insertIndex.phone},
-                STR_TO_DATE(#{insertIndex.create_time},'%Y-%m-%d'))
+                STR_TO_DATE(#{insertIndex.create_time},'%Y-%m-%d')
+        )
     </insert>
+
+
 
 </mapper>
