@@ -25,6 +25,8 @@ import com.dingtalk.chatbot.message.TextMessage;
 import com.myproject.demo.Dto.BaseResponse;
 import com.myproject.demo.dao.TodayThingsDao;
 import com.myproject.demo.entity.Schedule;
+import com.myproject.demo.enums.StatusMsg;
+import com.myproject.demo.enums.Type;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -69,6 +71,20 @@ public class TodayThingsService {
         BaseResponse response = new BaseResponse();
         List<Schedule> scheduleList = todayThingsDao.getAllSchedule();
         if(scheduleList!=null&&!(scheduleList.isEmpty())) {
+            for (int i = 0;i<scheduleList.size();i++){
+                for (StatusMsg status:StatusMsg.values()) {
+                        if (status.getCode().equals(scheduleList.get(i).getStatus())){
+                            scheduleList.get(i).setStatusMsg(status.getMsg());
+                        }
+                }
+            }
+            for (int i = 0;i<scheduleList.size();i++){
+                for (Type type:Type.values()) {
+                    if (type.getCode()==scheduleList.get(i).getType()){
+                        scheduleList.get(i).setTypeMsg(type.getMsg());
+                    }
+                }
+            }
             response.setData(JSON.parseArray(JSON.toJSONString(scheduleList)));
             response.setCode("200");
             response.setCount(scheduleList.size());
