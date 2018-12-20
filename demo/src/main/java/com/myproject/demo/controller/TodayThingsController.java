@@ -36,14 +36,15 @@ public class TodayThingsController {
 
     @ResponseBody
     @RequestMapping(value = "/querySchedule")
-    public BaseResponse  sendMessage(){
+    public BaseResponse  queryUndoneSchedule(String status){
 
-            return todayThingsService.querySchedule();
+        return todayThingsService.querySchedule(status);
     }
 
     @ResponseBody
     @RequestMapping(value = "/getAllSchedule")
     public BaseResponse getAllSchedule(){
+
         return todayThingsService.getAllSchedule();
     }
 

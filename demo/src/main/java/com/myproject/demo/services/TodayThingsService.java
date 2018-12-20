@@ -43,6 +43,8 @@ public class TodayThingsService {
 
     private static String HTTP_URL="https://oapi.dingtalk.com/robot/send?access_token=f1de16f6c55246727395a210696f01c08d4795ae0182999b8def82e43eca0212";
 
+
+
     public String sendMessage(){
 
         String code="";
@@ -67,6 +69,10 @@ public class TodayThingsService {
     }
 
 
+    /**
+     * 获取所有任务列表
+     * @return
+     */
     public BaseResponse getAllSchedule(){
         BaseResponse response = new BaseResponse();
         List<Schedule> scheduleList = todayThingsDao.getAllSchedule();
@@ -95,11 +101,34 @@ public class TodayThingsService {
         return response;
     }
 
-    public BaseResponse querySchedule(){
+    /**
+     * 根据完成状态查询任务
+     * @param status
+     * @return
+     */
+    public BaseResponse querySchedule(String status){
         BaseResponse response = new BaseResponse();
-        String status = "0";
+        for (StatusMsg s: StatusMsg.values()) {
+            if(s.getMsg().equals(status)) {
+                status = s.getCode();
+            }
+        }
         List<Schedule> sList = todayThingsDao.queryScheduleByStatus(status);
         if( sList!=null && !(sList.isEmpty())) {
+            for (int i = 0;i<sList.size();i++){
+                for (StatusMsg SMsg:StatusMsg.values()) {
+                    if (SMsg.getCode().equals(sList.get(i).getStatus())){
+                        sList.get(i).setStatusMsg(SMsg.getMsg());
+                    }
+                }
+            }
+            for (int i = 0;i<sList.size();i++){
+                for (Type type:Type.values()) {
+                    if (type.getCode()==sList.get(i).getType()){
+                        sList.get(i).setTypeMsg(type.getMsg());
+                    }
+                }
+            }
             response.setData(JSON.parseArray(JSON.toJSONString(sList)));
             response.setCode("200");
             response.setCount(sList.size());
