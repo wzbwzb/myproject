@@ -67,11 +67,14 @@ public class Schedule {
     private Timestamp finishTime;
 
     /**
-     * 完成状态
+     * 完成状态 0为未完成,1为已完成
      */
     @Column(name = "status")
     private String status;
 
 
+    private String typeMsg;
+
+    private String statusMsg;
 
 }
