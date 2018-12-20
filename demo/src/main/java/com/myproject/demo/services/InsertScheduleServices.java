@@ -1,0 +1,21 @@
+package com.myproject.demo.services;
+
+import com.myproject.demo.dao.InsertScheduleDao;
+import com.myproject.demo.dao.UserLoginDao;
+import com.myproject.demo.entity.InsertSchedule;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Service
+public class InsertScheduleServices {
+
+    @Resource
+    public InsertScheduleDao insertScheduleDao;
+
+    public void insertSchedule(InsertSchedule insertSchedule){
+        insertScheduleDao.insertSchedule(insertSchedule);
+    }
+}
