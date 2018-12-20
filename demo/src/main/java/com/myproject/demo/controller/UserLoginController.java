@@ -589,7 +589,7 @@ public class UserLoginController {
 
         String address = request.getParameter("address");
         String port = request.getParameter("port");
-        String waybill = request.getParameter("waybill");
+        String waybill = "00" + request.getParameter("waybill");
         String rediss = request.getParameter("redis");
 
         String[] keys = new String[]{"T_STL_TRANSFER_FRONT:NOTICE_0","T_STL_TRANSFER_FRONT:NOTICE_1",
@@ -605,7 +605,7 @@ public class UserLoginController {
         List<String> list1;
         List<String> list2 = new ArrayList<>();
 
-        System.out.println("redis:" + keys[place] + " 单号：" + waybill);
+//        System.out.println("redis:" + keys[place] + " 单号：" + waybill);
 
         if (address.equals("") || port.equals("")){
 
