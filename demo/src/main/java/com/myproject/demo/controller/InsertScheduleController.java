@@ -1,5 +1,9 @@
 package com.myproject.demo.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.myproject.demo.Dto.BaseResponse;
+import com.myproject.demo.entity.DayTask;
 import com.myproject.demo.entity.InsertSchedule;
 import com.myproject.demo.services.InsertScheduleServices;
 import com.myproject.demo.services.UserLoginServices;
@@ -10,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Controller
@@ -21,6 +28,7 @@ public class InsertScheduleController {
     public InsertScheduleServices insertScheduleServices;
 
     public InsertSchedule insertSchedule;
+    public DayTask dayTask;
 
     @RequestMapping(value = "/schedule",method = {RequestMethod.GET,RequestMethod.POST})
     public String schedule(){
@@ -57,5 +65,26 @@ public class InsertScheduleController {
         }
         insertSchedule = null;
         return "添加成功";
+    }
+
+    @RequestMapping(value = "/chooseTask",method = {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public BaseResponse chooseTask(HttpServletRequest request){
+
+        BaseResponse baseResponse = new BaseResponse();
+        String title = request.getParameter("title");
+
+        dayTask = new DayTask();
+        dayTask.setTitle(title);
+
+        List<DayTask> list = insertScheduleServices.selectDayTask(dayTask);
+
+        baseResponse.setData(JSON.parseArray(JSON.toJSONString(list)));
+//        System.out.println(list.toString());
+        baseResponse.setMsg("查找成功");
+        baseResponse.setCode("200");
+
+
+        return  baseResponse;
     }
 }

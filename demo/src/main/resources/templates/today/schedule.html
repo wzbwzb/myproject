@@ -124,6 +124,32 @@
             </form>
         </div>
     </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">每日必做</h2>
+        <div class="layui-colla-content">
+            <p style="margin-bottom: 15px">每日必做只需要选择你想要添加的，然后直接保存即可，时间选择默认为当天，如果需要选择时间，请选择上方
+                的添加任务！</p>
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">搜索内容</label>
+                        <div class="layui-input-inline">
+                            <select name="choose" id="choose" lay-filter="choose">
+                                <option value="">请选择列</option>
+                                <option value="title">标题</option>
+                                <option value="content">内容</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select id="daytask" lay-search="">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 <script src="../layui/jquery-3.3.1.min.js"></script>
@@ -184,6 +210,26 @@
             return false;
         });
 
+        /**
+         * 下拉选择框
+         */
+        form.on('select(choose)',function () {
+            var value = $('#choose').val();
+            var data = new Choose(value);
+            $.ajax({
+                data:data,
+                dataType: 'text',
+                timeout:3000,
+                type:'post',
+                url:'/chooseTask',
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (data) {
+
+                }
+            });
+        });
         /*
          * 日期渲染
          */
@@ -206,7 +252,7 @@
         //弹框提示
         $('#time,#time1,#time2').click(function () {
             var that = this;
-            /*
+            /**
              * tips(content,follow,options)
              */
             layer.tips('时间选择从今天开始，最多20天', that, {
@@ -214,6 +260,13 @@
                 tipsMore:false
             }); //在元素的事件回调体中，follow直接赋予this即可
         });
+
+        /**
+         * 自定义函数,传类
+         */
+        function Choose(title) {
+            this.title = title;
+        }
     });
 </script>
 </html>
