@@ -627,9 +627,9 @@ public class UserLoginController {
 
     public boolean ud(String email, String password, String phone, String uname, String temp) {
         try{
-           userLogin.setAll(email,password,phone,uname,temp);
             userLogin = new UserLogin();
-           userLoginServices.updateuser(userLogin);
+            userLogin.setAll(email,password,phone,uname,temp);
+            userLoginServices.updateuser(userLogin);
         }catch (Exception e){
             return true;
         }
