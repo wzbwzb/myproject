@@ -8,6 +8,11 @@
     </select>
 
     <select id="queryScheduleByStatus" resultType="com.myproject.demo.entity.Schedule">
-        select * from  Schedule where status = #{status}
+        select * from  Schedule
+        <where>
+            <if test="null != status and '' != status">
+            status =#{status}
+            </if>
+        </where>
     </select>
 </mapper>
