@@ -1,5 +1,6 @@
 package com.myproject.demo.dao;
 
+import com.myproject.demo.entity.DayTask;
 import com.myproject.demo.entity.InsertSchedule;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -10,4 +11,5 @@ import java.util.List;
 @Mapper
 public interface InsertScheduleDao {
     public void insertSchedule(@Param("insertschedule")InsertSchedule insertSchedule);
+    public List<DayTask> selectDayTask(@Param("daytask")DayTask dayTask);
 }

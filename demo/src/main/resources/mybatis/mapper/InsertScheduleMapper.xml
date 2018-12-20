@@ -16,4 +16,8 @@
         )
     </insert>
 
+    <select id="selectDayTask" resultType="com.myproject.demo.entity.DayTask">
+        select * from daytask
+    </select>
+
 </mapper>
