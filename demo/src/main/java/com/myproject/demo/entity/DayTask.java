@@ -19,4 +19,12 @@ public class DayTask {
      */
     @Column(name = "content")
     private String content;
+
+    /**
+     * 每日任务内容
+     */
+    @Column(name = "type")
+    private int type;
+
+    private String typeMsg;
 }

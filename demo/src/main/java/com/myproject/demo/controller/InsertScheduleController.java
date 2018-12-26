@@ -1,24 +1,22 @@
 package com.myproject.demo.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.myproject.demo.Dto.BaseResponse;
+import com.myproject.demo.Dto.DayTaskResponse;
 import com.myproject.demo.entity.DayTask;
 import com.myproject.demo.entity.InsertSchedule;
+import com.myproject.demo.enums.Type;
 import com.myproject.demo.services.InsertScheduleServices;
-import com.myproject.demo.services.UserLoginServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Controller
@@ -45,15 +43,11 @@ public class InsertScheduleController {
         String type = request.getParameter("type");
         String status = "0";
 
-        Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String create_time = simpleDateFormat.format(date);
-
         insertSchedule = new InsertSchedule();
         insertSchedule.setType(Integer.parseInt(type));
         insertSchedule.setTitle(title);
         insertSchedule.setContent(content);
-        insertSchedule.setCreate_time(create_time);
+        insertSchedule.setCreate_time(correntTime());
         insertSchedule.setFinish_time(time);
         insertSchedule.setStatus(status);
 
@@ -67,6 +61,34 @@ public class InsertScheduleController {
         return "添加成功";
     }
 
+    @RequestMapping(value = "/uploadDayTaskSelect",method = {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public String uploadDayTaskSelect(@RequestBody DayTaskResponse flag){
+
+        List<DayTask> list = flag.getDayTaskData();
+
+        for (DayTask aList : list) {
+            for (Type type : Type.values()) {
+                if (aList.getTypeMsg() == type.getMsg()) {
+                    aList.setType(type.getCode());
+                }
+            }
+        }
+
+        for (DayTask list1:list){
+            insertSchedule = new InsertSchedule();
+            insertSchedule.setCreate_time(correntTime());
+            insertSchedule.setTitle(list1.getTitle());
+            insertSchedule.setContent(list1.getContent());
+            insertSchedule.setType(list1.getType());
+            insertSchedule.setStatus("0");
+            insertScheduleServices.insertSchedule(insertSchedule);
+            insertSchedule = null;
+        }
+
+        return "保存成功";
+    }
+
     @RequestMapping(value = "/chooseTask",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public BaseResponse chooseTask(HttpServletRequest request){
@@ -78,13 +100,25 @@ public class InsertScheduleController {
         dayTask.setTitle(title);
 
         List<DayTask> list = insertScheduleServices.selectDayTask(dayTask);
+        for (DayTask aList : list) {
+            for (Type type : Type.values()) {
+                if (aList.getType() == type.getCode()) {
+                    aList.setTypeMsg(type.getMsg());
+                }
+            }
+        }
 
         baseResponse.setData(JSON.parseArray(JSON.toJSONString(list)));
-//        System.out.println(list.toString());
         baseResponse.setMsg("查找成功");
         baseResponse.setCode("200");
-
-
         return  baseResponse;
+    }
+
+    private String correntTime(){
+
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        return simpleDateFormat.format(date);
     }
 }
