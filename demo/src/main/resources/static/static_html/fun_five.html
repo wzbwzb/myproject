@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+<style>
+    .mybody{
+        width: 98.5%;
+        margin: 10px 10px auto;
+    }
+    .myA{
+        font-size: 0.8em;
+        color: gainsboro;
+    }
+</style>
+<body class="mybody">
+<div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>简单接口测试小工具
+            <a href="https://www.cnblogs.com/c9999/p/6636415.html" target="_blank" class="myA">http请求介绍</a></legend>
+    </fieldset>
+</div>
+<div>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">接口地址</label>
+            <div class="layui-input-block" style="width: 50%">
+                <input type="text" name="interAddress" lay-verify="required" id="interAddress" autocomplete="off"
+                       placeholder=""
+                       class="layui-input" required>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">接口参数</label>
+            <div class="layui-input-block">
+                            <textarea placeholder="" class="layui-textarea" name="interData"
+                                      id="interData"></textarea>
+            </div>
+        </div>
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-danger" id="btOK" lay-submit lay-filter="btOK">确认</button>
+            <input type="reset" class="layui-btn" id="reset2">
+            <button class="layui-btn layui-btn-danger" id="btSave" lay-submit lay-filter="btSave">保存接口和参数</button>
+            <button class="layui-btn layui-btn-danger" id="toTable" lay-submit lay-filter="toTable">转换表格</button>
+        </div>
+    </form>
+    <div>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>返回数据</legend>
+        </fieldset>
+    </div>
+    <div>
+        <label for="returnValue"></label>
+        <textarea id="returnValue" class="layui-textarea" readonly></textarea>
+    </div>
+    <table class="layui-table" lay-filter="interFaceTable" id="interFaceTable">
+        <thead><tr id="tableHead"></tr></thead>
+        <tbody><tr id="tableBody"></tr></tbody>
+    </table>
+</div>
+<script src="../layui/jquery-3.3.1.min.js"></script>
+<script src="../layui/layui.js"></script>
+<script>
+    layui.use(['table','layer','form'], function() {
+            var form = layui.form;
+            var table = layui.table;
+            var layer = layui.layer;
+            var $ = layui.jquery;
+
+            $('#interAddress').val("http://jingangtest.yto56.com.cn/services/priceI/bpricewithweightrulebyname");
+            $('#interData').val("{\n" +
+                "\t\"fromProvinceName\":\"湖南省\",\n" +
+                "\t\"fromCityName\":\"长沙市\",\n" +
+                "\t\"toProvinceName\":\"上海\",\n" +
+                "\t\"toCityName\":\"上海市\",\n" +
+                "\t\"effectiveTypeCode\":\"\",\n" +
+                "\t\"priceTypeCode\":\"\",\n" +
+                "\t\"weight\":\"7\",\n" +
+                "\t\"auth\":\"eIjvyuhFHrrm9jkLmxwqYw==\"\n" +
+                "}");
+
+        $('#returnValue').dblclick(function () {
+            if ($('#returnValue').val() === ''){
+            } else {
+                layer.alert($('#returnValue').val(),{
+                    area: ['1380px', '700px']
+                });
+            }
+        });
+
+        form.on('submit(btSave)',function (data) {
+
+            layer.prompt({title: '输入接口名', formType: 2}, function(title, index){
+                layer.close(index);
+                layer.prompt({title: '输入备注', formType: 2}, function(text, index){
+                    layer.close(index);
+                    var interJSON = {
+                        "interTitle":title,
+                        "interContent":text
+                    };
+                    var saveInterFace = JSON.stringify($.extend(data.field, interJSON));
+                    $.ajax({
+                        url:'/interSave',
+                        data:saveInterFace,
+                        dataType: 'text',
+                        contentType:'application/json;charset=UTF-8',
+                        type:'post',
+                        success:function (data) {
+                            layer.msg(data);
+                        },
+                        error:function (data) {
+                        }
+                    });
+                });
+            });
+            return false;
+        });
+
+        form.on('submit(toTable)',function (data) {
+            document.getElementById("tableHead").innerHTML='';
+            document.getElementById("tableBody").innerHTML='';
+            /**
+             * 返回值格式{"data":[{}],"success":"1","msg":""}
+             */
+            var value = JSON.parse($('#returnValue').val());
+            var tableKey = [],flag = 0;
+            var tableValue = [];
+            /**
+             * value : {"A":"a","data":[{"b1":"b11","b2":"b22",.....}]}
+             * 数组保存key和value
+             */
+            for (tablekey in value.data[0]){//得到value里面的data的值，{......}
+                tableValue[flag] = value.data[0][tablekey];
+                tableKey[flag++] = tablekey;
+            }
+            for (var j = 0; j < tableKey.length; j++) {
+                $('#tableHead').append("<th>" + tableKey[j] + "</th>");
+                $('#tableBody').append("<th>" + tableValue[j] + "</th>");
+            }
+            return false;
+        });
+
+        form.on('submit(btOK)',function (data) {
+            var flag = JSON.stringify(data.field);
+            $.ajax({
+                url:'/interTest',
+                data:flag,
+                dataType: 'text',
+                contentType:'application/json;charset=UTF-8',
+                type:'post',
+                success:function (data) {
+                    var value = JSON.parse(data);
+                    $('#returnValue').val(data);
+                },
+                error:function (data) {
+                    layer.msg('请求失败');
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

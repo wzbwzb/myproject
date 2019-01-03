@@ -7,6 +7,7 @@ import com.myproject.demo.entity.DayTask;
 import com.myproject.demo.entity.InsertSchedule;
 import com.myproject.demo.enums.Type;
 import com.myproject.demo.services.InsertScheduleServices;
+import com.myproject.demo.utils.InterTestHttpServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,7 @@ public class InsertScheduleController {
 
     @RequestMapping(value = "/schedule",method = {RequestMethod.GET,RequestMethod.POST})
     public String schedule(){
+
         return "/today/schedule";
     }
 
@@ -78,6 +80,7 @@ public class InsertScheduleController {
         for (DayTask list1:list){
             insertSchedule = new InsertSchedule();
             insertSchedule.setCreate_time(correntTime());
+            insertSchedule.setFinish_time(correntTime());
             insertSchedule.setTitle(list1.getTitle());
             insertSchedule.setContent(list1.getContent());
             insertSchedule.setType(list1.getType());

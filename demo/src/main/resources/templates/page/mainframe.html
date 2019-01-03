@@ -47,7 +47,7 @@
                     <dd><a href="javascript:;" id="two">动态select选择框</a></dd>
                     <dd><a href="javascript:;" id="three">带转义字符的JSON</a></dd>
                     <dd><a href="javascript:;" id="four">Redis数据查询</a></dd>
-                    <dd><a href="javascript:;" id="test-btn">测试专用</a></dd>
+                    <dd><a href="javascript:;" id="interface">接口测试</a></dd>
                     <dd><a href="javascript:;" id="cainiao">菜鸟电子面单</a></dd>
                 </dl>
             </li>
@@ -183,6 +183,11 @@
 
         $('#four').click(function () {
             $('#myiframe').attr("src", "static_html/fun_four.html");
+            document.getElementById("mybody").innerHTML = $("#mybody").html();
+        });
+
+        $('#interface').click(function () {
+            $('#myiframe').attr("src", "static_html/fun_five.html");
             document.getElementById("mybody").innerHTML = $("#mybody").html();
         });
 
