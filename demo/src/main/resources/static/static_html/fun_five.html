@@ -70,7 +70,7 @@
     </div>
     <table class="layui-table" lay-filter="interFaceTable" id="interFaceTable">
         <thead><tr id="tableHead"></tr></thead>
-        <tbody><tr id="tableBody"></tr></tbody>
+        <tbody id="tableBody"></tbody>
     </table>
 </div>
 <script src="../layui/jquery-3.3.1.min.js"></script>
@@ -153,23 +153,46 @@
         form.on('submit(toTable)',function (data) {
             document.getElementById("tableHead").innerHTML='';
             document.getElementById("tableBody").innerHTML='';
-            /**
-             * 返回值格式{"data":[{}],"success":"1","msg":""}
-             */
-            var value = JSON.parse($('#returnValue').val());
-            var tableKey = [],flag = 0;
-            var tableValue = [];
-            /**
-             * value : {"A":"a","data":[{"b1":"b11","b2":"b22",.....}]}
-             * 数组保存key和value
-             */
-            for (tablekey in value.data[0]){//得到value里面的data的值，{......}
-                tableValue[flag] = value.data[0][tablekey];
-                tableKey[flag++] = tablekey;
-            }
-            for (var j = 0; j < tableKey.length; j++) {
-                $('#tableHead').append("<th>" + tableKey[j] + "</th>");
-                $('#tableBody').append("<th>" + tableValue[j] + "</th>");
+            switch ($('#paramStyle').val()){
+                /**
+                 * 返回值格式{"data":[{}],"success":"1","msg":""}
+                 */
+                case '1':
+                    var value = JSON.parse($('#returnValue').val());
+                    var tableKey = [],flag = 0;
+                    /**
+                     * value : {"A":"a","data":[{"b1":"b11","b2":"b22",.....}]}
+                     * 数组保存key和value
+                     */
+                    for (tablekey in value.data[0]){//得到表头的值，{......}
+                        tableKey[flag++] = tablekey;
+                    }
+                    for (var j = 0; j < tableKey.length; j++) {
+                        $('#tableHead').append("<th>" + tableKey[j] + "</th>");
+                    }
+
+                    for (var tabletemp=0;tabletemp < value.data.length;tabletemp++){
+                        var tableValue = [],flag1 = 0;
+                        for (tablevalue in value.data[tabletemp]){//得到value里面的data的值，{......}
+                            tableValue[flag1++] = value.data[tabletemp][tablevalue];
+                        }
+                        $('#tableBody').append("<tr>");
+                        for (var k = 0; k < tableKey.length; k++) {
+                            $('#tableBody').append("<th>" + tableValue[k] + "</th>");
+                        }
+                        $('#tableBody').append("</tr>");
+                    }
+
+                    break;
+                case '2':
+                    /**
+                     * 返回值格式{
+                     * "A":[{"a1":"a11","a2":"a22",......},{},{}......],
+                     * "B":[{"b1":"b11","b2":"b22",......},{},{}......]
+                     * }
+                     */
+                    layer.msg('还在开发呢，别急，等到接口的时候有时间做了它QWQ');
+                    break;
             }
             return false;
         });
