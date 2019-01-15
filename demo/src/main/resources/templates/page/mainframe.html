@@ -37,10 +37,22 @@
         <div class="layui-logo">私の管理システム</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="javascript:;" id="search"><i class="layui-icon layui-icon-search myicon" title="Baidu のビットは、あなたが知っている"></i></a></li>
-            <li class="layui-nav-item"><a href="javascript:;" id="layui"><i class="layui-icon layui-icon-util myicon" title="Layui ツール"></i></a></li>
+            <li class="layui-nav-item"><a href="javascript:;" id="search"><i
+                    class="layui-icon layui-icon-search myicon" title="百度"></i></a></li>
+
+            <li class="layui-nav-item"><a href="javascript:;" id="tools"><i class="layui-icon layui-icon-app myicon"
+                                                                        title="小特集コレクション"></i></a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;" id="layui">layui</a></dd>
+                    <dd><a href="javascript:;" id="vue">vue</a></dd>
+                    <dd><a href="javascript:;" id="runoob">菜鸟</a></dd>
+                    <dd><a href="javascript:;" id="element">element</a></dd>
+                </dl>
+            </li>
+
             <li class="layui-nav-item"><a href="javascript:history.go(-1)" id="book"><i class="layui-icon layui-icon-return myicon" title="返す"></i></a></li>
-            <li class="layui-nav-item"><a href="javascript:;" id="add"><i class="layui-icon layui-icon-website myicon" title="履歴とブックマーク"></i></a></li>
+            <li class="layui-nav-item"><a href="javascript:;" id="add"><i
+                    class="layui-icon layui-icon-website myicon" title="浏览网址"></i></a></li>
             <li class="layui-nav-item"><a href="javascript:;" id="fun"><i class="layui-icon layui-icon-app myicon" title="小特集コレクション"></i></a>
                 <dl class="layui-nav-child">
                     <dd><a href="javascript:;" id="one">装备词典</a></dd>
@@ -262,6 +274,48 @@
                 type: 2,
                 shade: 0,
                 content: 'https://www.layui.com/demo/form.html',
+                area: ['1450px', '830px'],
+                offset:[70,210],
+                maxmin: true
+            });
+            // layer.full(index);
+        });
+        $('#element').click(function () {
+            // var index = layer.open({
+            layer.open({
+                title:'element',
+                anim:4,
+                type: 2,
+                shade: 0,
+                content: 'http://element-cn.eleme.io/#/zh-CN/component/installation',
+                area: ['1450px', '830px'],
+                offset:[70,210],
+                maxmin: true
+            });
+            // layer.full(index);
+        });
+        $('#vue').click(function () {
+            // var index = layer.open({
+            layer.open({
+                title:'vue',
+                anim:4,
+                type: 2,
+                shade: 0,
+                content: 'http://doc.vue-js.com/v2/guide/',
+                area: ['1450px', '830px'],
+                offset:[70,210],
+                maxmin: true
+            });
+            // layer.full(index);
+        });
+        $('#runoob').click(function () {
+            // var index = layer.open({
+            layer.open({
+                title:'layui',
+                anim:4,
+                type: 2,
+                shade: 0,
+                content: 'http://www.runoob.com/',
                 area: ['1450px', '830px'],
                 offset:[70,210],
                 maxmin: true

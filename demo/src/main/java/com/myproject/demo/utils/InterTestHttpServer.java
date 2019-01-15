@@ -28,31 +28,25 @@ public class InterTestHttpServer {
     /**
      * get请求
      * @param url 接口接收的参数地址
-     * @param jsonParams 接口参数
+     * @param key json的key
+     * @param value json的value
      */
-    public String HttpGetofJSONString(String url,String jsonParams) {
+    public String HttpGetofJSONString(String url,String[] key,String[] value) {
 
         try {
             URIBuilder uriBuilder = new URIBuilder(url);
             List<NameValuePair> params = new LinkedList<>();
-            params.add(new BasicNameValuePair("fromProvinceName","湖南省"));
-            params.add(new BasicNameValuePair("fromCityName","长沙市"));
-            params.add(new BasicNameValuePair("toProvinceName","上海"));
-            params.add(new BasicNameValuePair("toCityName","上海市"));
-            params.add(new BasicNameValuePair("effectiveTypeCode",""));
-            params.add(new BasicNameValuePair("priceTypeCode",""));
-            params.add(new BasicNameValuePair("weight","7"));
-            params.add(new BasicNameValuePair("auth","eIjvyuhFHrrm9jkLmxwqYw=="));
+            for (int i = 0; i < key.length; i++){
+                params.add(new BasicNameValuePair(key[i],value[i]));
+            }
             uriBuilder.addParameters(params);
             HttpGet httpGet = new HttpGet(uriBuilder.build());
 
             response = httpClient.execute(httpGet);
-            System.out.println("成功");
             HttpEntity entity = response.getEntity();
             // 使用Apache提供的工具类进行转换成字符串
             entityStr = EntityUtils.toString(entity, "UTF-8");
-            System.out.println(entityStr);
-            httpClient.close();
+//            httpClient.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
